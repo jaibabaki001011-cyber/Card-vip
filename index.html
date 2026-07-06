@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Invitation</title>
+    <!-- OG Tags (WhatsApp Preview) के लिए जगह खाली छोड़ी है, नीचे से डेटा अपने आप आ जाएगा -->
+    <meta property="og:title" id="og-title" content="You are Invited!">
+    <meta property="og:description" id="og-desc" content="Click to view our Digital Invitation.">
+    <meta property="og:image" content="card.jpg">
+    <meta property="og:type" content="website">
+
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #121212; overflow: hidden; font-family: sans-serif; }
+        .bg-blur { position: absolute; width: 100%; height: 100%; background: url('card.jpg') center/cover; filter: blur(20px); opacity: 0.4; }
+        .countdown { z-index: 2; background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 10px; border: 1px solid #d4af37; color: white; text-align: center; margin-bottom: 15px; }
+        .card-img { position: relative; max-width: 95vw; max-height: 70vh; object-fit: contain; z-index: 1; }
+        #btn-float { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: #d4af37; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; z-index: 100; transition: 0.3s; cursor: pointer; }
+        .dot-mode { width: 12px !important; height: 12px !important; font-size: 0 !important; opacity: 0.5; }
+        #menu { position: fixed; bottom: 100px; right: 30px; display: none; flex-direction: column; gap: 10px; z-index: 99; }
+        #menu a { padding: 10px 20px; border-radius: 20px; text-decoration: none; color: white; background: #333; }
+        #expired { display: none; flex-direction: column; align-items: center; z-index: 200; background: #121212; width: 100%; height: 100%; justify-content: center; color: white; }
+        .exp-btn { display: block; padding: 15px; margin: 10px; border-radius: 10px; color: white; text-decoration: none; font-weight: bold; width: 250px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="bg-blur"></div>
+    <div class="countdown" id="box">Time left for the Event:<br><span id="timer">Loading...</span></div>
+    <img src="card.jpg" class="card-img" id="myCard">
+    <div id="btn-float" onclick="document.getElementById('menu').style.display = (document.getElementById('menu').style.display=='flex'?'none':'flex')">+</div>
+    <div id="menu"><a href="https://wa.me/919079761779">WhatsApp</a><a href="https://www.instagram.com/hariomdeg.cre.invitation">Instagram</a></div>
+    <div id="expired"><h2>Want to create your own Invitation?</h2><div style="font-size:24px; color:#d4af37; margin:20px;">📞 +91 9079761779</div><a href="https://wa.me/919079761779" class="exp-btn" style="background:#25d366">WhatsApp</a><a href="https://www.instagram.com/hariomdeg.cre.invitation" class="exp-btn" style="background:#e1306c">Instagram</a></div>
+
+    <script>
+        setTimeout(() => { document.getElementById('btn-float').classList.add('dot-mode'); }, 1500);
+        document.body.onclick = () => { document.getElementById('btn-float').classList.remove('dot-mode'); };
+
+        function setupInvitation(title, desc, eventDateStr) {
+            document.getElementById('og-title').content = title;
+            document.getElementById('og-desc').content = desc;
+            
+            const eventDate = new Date(eventDateStr).getTime();
+            const expiryDate = eventDate + (24 * 60 * 60 * 1000);
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                if (now > expiryDate) {
+                    document.getElementById("myCard").style.display = "none";
+                    document.getElementById("box").style.display = "none";
+                    document.getElementById("btn-float").style.display = "none";
+                    document.getElementById("expired").style.display = "flex";
+                    return;
+                }
+                const d = eventDate - now;
+                if(d < 0) document.getElementById("timer").innerHTML = "Event has started! 🎉";
+                else document.getElementById("timer").innerHTML = Math.floor(d/86400000) + "d " + Math.floor((d%86400000)/3600000) + "h " + Math.floor((d%3600000)/60000) + "m";
+            }, 1000);
+        }
+    </script>
+
+    <!-- ======================================================= -->
+    <!-- मोबाइल से यहाँ बस 3 चीजें बदलें और आपका काम हो गया! -->
+    <!-- ======================================================= -->
+    <script>
+        setupInvitation(
+            "Rahul Weds Priya 💍",        // 1. WhatsApp पर दिखने वाला नाम
+            "15th July 2026, Save the date!", // 2. छोटा मैसेज
+            "2026-07-15"                 // 3. इवेंट की तारीख (YYYY-MM-DD)
+        );
+    </script>
+</body>
+</html>
